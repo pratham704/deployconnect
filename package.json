@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "wfr",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+   "engines": { "node": "18.x" },
+    "scripts": {
+        "start": "node index.js"
+    },
+ 
   "author": "pss",
   "license": "ISC",
   "dependencies": {
