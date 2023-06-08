@@ -29,7 +29,7 @@ const s3 = new AWS.S3({
 const uploadS3 = multer({
     storage: multerS3({
         s3,
-        bucket: process.env.CYCLIC_BUCKE,
+        bucket: process.env.S3_BUCKET_NAME,
         acl: 'public-read',
         key: function(req, file, cb) {
             cb(null, `${Date.now().toString()}-${file.originalname}`);
