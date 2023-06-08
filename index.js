@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+const cors = require('cors')
 const mongoose = require('mongoose');
 const abc = require('./contactmodel');
 const imgsd = require('./newpost');
@@ -7,35 +7,19 @@ const nopostdp = require('./nopostdp');
 const messagemodel = require('./message');
 const storycreate = require('./stories');
 const app = express();
-const dotenv = require('dotenv');
+const dotenv = require('dotenv')
 dotenv.config();
 const multer = require('multer');
 const { resolve } = require('path');
-const upload = multer({ dest: 'uploads/' });
-app.use('/uploads', express.static('uploads'));
+const upload = multer({ dest: 'uploads/' })
+app.use('/uploads', express.static('uploads'))
 app.use(cors());
 app.use(express.json());
 mongoose.set('strictQuery', false);
 
-const AWS = require('aws-sdk');
-const multerS3 = require('multer-s3');
 
-const s3 = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
-});
 
-const uploadS3 = multer({
-    storage: multerS3({
-        s3,
-        bucket: process.env.S3_BUCKET_NAME,
-        acl: 'public-read',
-        key: function(req, file, cb) {
-            cb(null, `${Date.now().toString()}-${file.originalname}`);
-        }
-    })
-});
+
 const url = `${process.env.MONGO}`
 
 
@@ -110,7 +94,7 @@ app.post('/createpost', upload.single('image'), async(req, res) => {
 
 
 
-        const imageUrl = req.file.location
+        const imageUrl = req.file.path
 
 
 
@@ -315,7 +299,7 @@ app.post('/dps', upload.single('dp'), async(req, res) => {
 
 
 
-        const check2 = await imgsd.find({ username: req.body.usn }).updateMany({ dp: req.file.location });
+        const check2 = await imgsd.find({ username: req.body.usn }).updateMany({ dp: req.file.path });
         if (check2.upsertedId != null) {
 
             res.json(check2.dp)
@@ -328,7 +312,7 @@ app.post('/dps', upload.single('dp'), async(req, res) => {
 
             if (cd) {
 
-                const check2 = await nopostdp.find({ username: req.body.usn }).updateMany({ dp: req.file.location });
+                const check2 = await nopostdp.find({ username: req.body.usn }).updateMany({ dp: req.file.path });
 
                 const c = await nopostdp.findOne({ username: req.body.usn })
 
@@ -341,7 +325,7 @@ app.post('/dps', upload.single('dp'), async(req, res) => {
 
                 const data = await nopostdp.create({
                     username: req.body.usn,
-                    dp: req.file.location,
+                    dp: req.file.path,
 
                 })
 
@@ -1167,7 +1151,7 @@ app.post('/recentchatsdisplay', async(req, res) => {
 
 
 app.post('/storycreation', upload.single('image'), async(req, res) => {
-    const imageUrl = req.file.location;
+    const imageUrl = req.file.path;
 
 
     const c = await imgsd.findOne({ username: req.body.usn });
